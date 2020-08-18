@@ -1,0 +1,18 @@
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    operationsSorter: method
+
+logging:
+  level:
+    com:
+      app:
+        mutant: ERROR
+
+spring:
+  datasource:
+    url: ${DATABASE_CONNECTION_STRING}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.jdbc.Driver
