@@ -1,0 +1,17 @@
+docker-compose up -d -f enviroment_vars.env
+docker ps -a
+docker rm
+docker build -t <IMAGE_NAME> .
+docker images <IMAGE_NAME>
+docker create --name <CONTAINER_NAME> -p 8081:8081 gisearch:1.0
+docker start <CONTAINER_NAME>
+docker exec -ti <CONTAINER_ID> bash	
+	
+	${DATABASE_CONNECTION_STRING} jdbc:mysql://localhost:3306/mutant
+    ${DATABASE_USERNAME} microservicios
+    ${DATABASE_PASSWORD}  micro123#
+	
+docker push gcr.io/crested-unity-286721/mutants:v1.0
+
+Account Service for SQL connection
+113029651493401471757
