@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +40,10 @@ public class MutantController {
     @ApiResponses(value = { 
             @ApiResponse(responseCode = "200", description = "The DNA contains Mutant traces", 
                 content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ServiceResponse.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid dna information supplied", content = @Content), 
-            @ApiResponse(responseCode = "403", description = "The DNA doesn't contains Mutant traces", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Internal Application error", content = @Content)})
+            @ApiResponse(responseCode = "60001", description = "Invalid DNA information supplied", content = @Content),
+            @ApiResponse(responseCode = "60002", description = "Invalid DNA matrix size", content = @Content),
+            @ApiResponse(responseCode = "60003", description = "The DNA doesn't contains Mutant traces", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content)})
 	@PostMapping("/dna")
 	public ResponseEntity<ServiceResponse> validateDNA(@RequestBody List<String> dna) throws JsonProcessingException {
 		ServiceResponse serviceResponse = new ServiceResponse();
@@ -58,7 +60,29 @@ public class MutantController {
         			e.getMessage(), 
         			String.valueOf(INTERNAL_SERVER_ERROR.value())
             	);
-            logger.info(".:: End Validate DNA Error Response : {}", HttpUtils.printInformation(serviceResponse), e);
+            logger.error(".:: End Validate DNA Error Response : {}", HttpUtils.printInformation(serviceResponse), e);
+            return new ResponseEntity<>(serviceResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@Operation(summary = "Get stats from mutant and human DNA")
+    @ApiResponses(value = { 
+            @ApiResponse(responseCode = "200", description = "Information with reviewed DNA stats", 
+                content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ServiceResponse.class)) }),
+            @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content)})
+	@GetMapping("/stats")
+	public ResponseEntity<ServiceResponse> dnaStats() throws JsonProcessingException {
+		ServiceResponse serviceResponse = new ServiceResponse();
+		try {
+			serviceResponse = mutantService.getStats();
+			return new ResponseEntity<>(serviceResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			HttpUtils.preparedErrorResponse(
+        			serviceResponse, 
+        			e.getMessage(), 
+        			String.valueOf(INTERNAL_SERVER_ERROR.value())
+            	);
+            logger.error(".:: End Validate DNA Error Response : {}", HttpUtils.printInformation(serviceResponse), e);
             return new ResponseEntity<>(serviceResponse,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

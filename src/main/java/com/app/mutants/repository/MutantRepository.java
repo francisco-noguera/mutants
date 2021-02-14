@@ -14,5 +14,6 @@ import com.app.mutants.model.Mutant;
 public interface MutantRepository extends JpaRepository<Mutant, String> {
 
 	public List<Mutant> findByDna(String dna);
+	public Long countByMutant(boolean isMutant);	
 	
 }

@@ -8,7 +8,6 @@ public class BaseException extends RuntimeException {
 	private String errorCode;
 	private String traceId;
 	private HttpStatus status;
-	private Object customMessage;
 
 	public BaseException() {
 	}
@@ -23,13 +22,6 @@ public class BaseException extends RuntimeException {
 		this.status = status;
 	}
 
-	public BaseException(String errorCode, String traceId, HttpStatus status, Object customMessage) {
-		this.errorCode = errorCode;
-		this.traceId = traceId;
-		this.status = status;
-		this.customMessage = customMessage;
-	}
-
 	public String getTraceId() {
 		return traceId;
 	}
@@ -40,10 +32,6 @@ public class BaseException extends RuntimeException {
 
 	public HttpStatus getStatus() {
 		return status;
-	}
-
-	public Object getCustomMessage() {
-		return customMessage;
 	}
 
 }

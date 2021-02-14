@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class MutantControllerTest {
 	
 	
 	@Test
-	public void dnaValidationMutant() throws JsonProcessingException {
+	public void dnaValidationMutant() throws JsonProcessingException, MutantGenericException, InterruptedException, ExecutionException {
 		String[] dnaArray = {"ATGCGA","CAGTGC","TTATGT","AGAAGG","TTCCCC","TCACTG"};
 		List<String> dna = Arrays.asList(dnaArray);
 		JSONArray jsonArray = new JSONArray(dna);
@@ -45,7 +46,7 @@ public class MutantControllerTest {
 	}
 	
 	@Test
-	public void dnaValidationNonMutant() throws JsonProcessingException {
+	public void dnaValidationNonMutant() throws JsonProcessingException, MutantGenericException, InterruptedException, ExecutionException {
 		String[] dnaArray = {"ATGCGA","CAGTGC","TTGTGT","AGAAAG","CCCATA","TCACTG"};
 		List<String> dna = Arrays.asList(dnaArray);
 		JSONArray jsonArray = new JSONArray(dna);
@@ -57,12 +58,25 @@ public class MutantControllerTest {
 	}
 	
 	@Test
-	public void dnaValidationError() throws JsonProcessingException {
+	public void dnaValidationError() throws JsonProcessingException, MutantGenericException, InterruptedException, ExecutionException {
 		String[] dnaArray = {"AT","CA"};
 		List<String> dna = Arrays.asList(dnaArray);
 		when(mutantService.isMutant(dna)).thenThrow(new MutantGenericException(INVALID_DNA_MATRIX_SIZE, UUID.randomUUID().toString()));
 		ResponseEntity<ServiceResponse> responseEntity = mutantController.validateDNA(dna);
 		assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@Test
+	public void dnaStats() throws JsonProcessingException {
+		ResponseEntity<ServiceResponse> responseEntity = mutantController.dnaStats();
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.OK); 
+	}
+	
+	@Test
+	public void dnaStatsError() throws JsonProcessingException {
+		when(mutantService.getStats()).thenThrow(new MutantGenericException(UUID.randomUUID().toString(), new RuntimeException()));
+		ResponseEntity<ServiceResponse> responseEntity = mutantController.dnaStats();
+		assertEquals(responseEntity.getStatusCode(), HttpStatus.INTERNAL_SERVER_ERROR); 
 	}
 
 }

@@ -34,7 +34,8 @@ All the API documentation could be found at **/swagger-ui-custom.html**
 
 Inside **./resources** folder is a **insomnia.json** file that has a API call example that could be imported on insomnia REST application to make API calls on local environment and in a temporal GKE service configured on Google Cloud Platform. Additional you could use the next CURL call as example:
 
-curl --request POST --url http://35.227.5.141:8080/mutants/dna --header 'content-type: application/json' --data '["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]'
+curl --request POST --url http://35.190.173.246:8080/mutants/dna --header 'content-type: application/json' --data '["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]'
+curl --request GET  --url http://35.190.173.246:8080/mutants/stats
 
 ## Application Errors explanation
 
