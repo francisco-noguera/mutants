@@ -42,7 +42,7 @@ public class MutantController {
                 content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ServiceResponse.class)) }),
             @ApiResponse(responseCode = "60001", description = "Invalid DNA information supplied", content = @Content),
             @ApiResponse(responseCode = "60002", description = "Invalid DNA matrix size", content = @Content),
-            @ApiResponse(responseCode = "60003", description = "The DNA doesn't contains Mutant traces", content = @Content),
+            @ApiResponse(responseCode = "403", description = "The DNA doesn't contains Mutant traces", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal Server error", content = @Content)})
 	@PostMapping("/dna")
 	public ResponseEntity<ServiceResponse> validateDNA(@RequestBody List<String> dna) throws JsonProcessingException {

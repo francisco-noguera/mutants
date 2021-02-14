@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -95,9 +94,7 @@ public class MutantServiceImpl implements MutantService {
 	@Async
 	private Future<Boolean> validateDNARow(char[][] dnaMatrix, int size) {
 		
-		CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-
-		Executors.newCachedThreadPool().submit(() -> {
+		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> {
 			for (int row = 0; row < size; row++) {
 				for (int col = 0; col < size; col++) {
 					int subListEnd = col + matchSize;
@@ -123,9 +120,7 @@ public class MutantServiceImpl implements MutantService {
 	@Async
 	private Future<Boolean> validateDNACol(char[][] dnaMatrix, int size) {
 		
-		CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-
-		Executors.newCachedThreadPool().submit(() -> {		
+		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> {		
 			for (int col = 0; col < size; col++) {
 				for (int row = 0; row < size; row++) {
 					int subListEnd = row + matchSize;
@@ -151,9 +146,7 @@ public class MutantServiceImpl implements MutantService {
 	@Async
 	private Future<Boolean> validateRightDNADiagonals(char[][] dnaMatrix, int size) {
 			
-		CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-
-		Executors.newCachedThreadPool().submit(() -> {
+		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> {
 			for (int col = 0; col < size; col++) {
 				for (int row = 0; row < size; row++) {
 					int subListEndRow = row + matchSize;
@@ -180,9 +173,7 @@ public class MutantServiceImpl implements MutantService {
 	@Async
 	private Future<Boolean> validateLeftDNADiagonals(char[][] dnaMatrix, int size) {
 		
-		CompletableFuture<Boolean> completableFuture = new CompletableFuture<>();
-
-		Executors.newCachedThreadPool().submit(() -> {
+		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> {
 			for (int col = 0; col < size; col++) {
 				for (int row = size - 1; row >= 0; row--) {
 					if (row - matchSize-1 >= 0 && col + matchSize <= size) {
